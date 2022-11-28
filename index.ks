@@ -8,7 +8,7 @@
 // individual program flags will go inside their own program 
 // with their own checks
 
-set config:ipu to 150.
+set config:ipu to 120. // set this to the lowest possible value
 
 set localControl to false. // are we being controlled by a PGM? True for yes
 set shipSteering to 0. // currently selected program will do the steering
@@ -26,24 +26,29 @@ set OEBIT to false.
 set CMPACTY to false.
 set IDLEBIT to false.
 
-set lastErrorCode to 0.
+set lastErrorCode to "0000".
 set secondLastErrorCode to lastErrorCode.
+set thirdLastErrorCode to secondLastErrorCode.
 
 set firstClock to time:seconds.
 set aliveTime to time:seconds - firstClock.
 
 set firstResponseTime to firstClock.
 set lastResponseTime to time:seconds - firstResponseTime.
-// now if this goes to something like -1 or -2, we do the restart.. who cares about VAC queues?!
+// now if this goes to something like -1 or -2, we do the restart..
+//  who cares about VAC queues?!
 
+runOncePath("0:/PGNS/ROUTINES/base.ks"). // -> routines 
 runOncePath("0:/PGNS/STATIC/base.ks"). // -> STATIC functions library index
-runOncePath("0:/PGNS/MAINTENANCE/base.ks").
+runOncePath("0:/PGNS/MAINTENANCE/base.ks"). // -> general 
 runOncePath("0:/PGNS/PGM/base.ks"). // -> PGM library index
 
 declare local function maintenance {
   set aliveTime to time:seconds - firstClock.
+  routinePick().
   agcGui().
   pgmPick().
+  routinePick().
 }
 
 until notOff {
