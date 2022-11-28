@@ -3,6 +3,8 @@
 // like we had for the last version of the PGNS nouns
 
 runOncePath("0:/PGNS/PGM/P00.ks").
+runOncePath("0:/PGNS/PGM/P40.ks").
+runOncePath("0:/PGNS/PGM/P64.ks").
 
 set programs to lexicon().
 programs:add("00", P00@).
@@ -12,8 +14,8 @@ declare function pgmPick {
     programs[currentProgram]().
   } else {
     set OEBIT to true.
-    raiseError(005).
-    set currentProgram to oldProgram.
+    raiseError(nonExistingProgram).
+    REVERT_PROG().
   }
 }
 
