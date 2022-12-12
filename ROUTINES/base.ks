@@ -1,7 +1,9 @@
 runOncePath("0:/PGNS/ROUTINES/R00.ks").
+runOncePath("0:/PGNS/ROUTINES/R10.ks").
+runOncePath("0:/PGNS/ROUTINES/R99.ks"). // for cleanup
 
 set routines to lexicon().
-routines:add("00", R00@).
+routines:add("10", R10@).
 
 set routineList to list().
 // routineList will have routines that we actively update.
@@ -12,20 +14,21 @@ declare global function ROUTINE_ADD {
   parameter rne.
   set rne to rne:tostring().
 
-  if rne:length = 2 {
+  if rne:length = 2 and routineList:find(rne){
     routineList:add(rne).
   }
   // if routine in routineList; return.
   // if not; verify, add and return
 }
-declare global function ROUTINE_DEL {
-  parameter rne.
-  // if routineAdd key in routineList; delete, return.
-  // if routine not in routineList; return
-}
 
 declare global function routinePick {
-  
+  // routineList will get cleaned up if it is ran once
+  // because of the loop-iteration power draw, we will start a routine
+  // ONLY if a program demands it, with some exceptions
 
-  // iterate and call!
+  R00(). // runs every time to update clocks.
+  for rns in routineList {
+    routines[rns]().
+  }
+  R99(). // runs every time to clear routine stack
 }
