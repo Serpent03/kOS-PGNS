@@ -1,8 +1,15 @@
 // error dictionary
-set nonExistingProgram to "0045".
-set incorrectDataEntry to "0190".
-set missingOrbitalTarget to "0701".
-set laggingCPU to "1201".
+// 1xxxx -> information
+// 2xxxx -> ignorable errors. program can proceed without them resolving
+// 3xxxx -> critical errors. program can't proceed without them resolving
+set MISSINGPROGRAM to "10045".
+set ILLEGALENTRYFORMAT to "10190". 
+set V37NOTALLOWED to "11520".
+set SQRTWITHNEGATIVE to "21302".
+set ARITHMETICONSTRING to "26088".
+set DIVBYZERO to "25910".
+set STACKTIMELIMIT to "31201".
+set ORBITALTGTMISSING to "36064".
 
 declare global function raiseError {
   parameter err to 0.
