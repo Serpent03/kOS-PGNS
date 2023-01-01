@@ -5,9 +5,9 @@ set config:obeyhideui to false.
 
 // draw the GUI
 
-set lastErrorTime to kuniverse:realtime.
-set lastProgErrorTime to kuniverse:realtime.
-set lastCompActyTime to kuniverse:realtime.
+set lastErrorTime to time:seconds.
+set lastProgErrorTime to time:seconds.
+set lastCompActyTime to time:seconds.
 set currentFlashTime to aliveTime.
 set currentTypeTime to aliveTime.
 
@@ -65,6 +65,10 @@ declare function REG_DISPLAYS {
     parameter R1, R2, R3.
     set REGVALS to DIGSYN(R1, R2, R3).
 
+    set REGVALS[0] to choose "" if R1 = "" else REGVALS[0]. 
+    set REGVALS[1] to choose "" if R2 = "" else REGVALS[1]. 
+    set REGVALS[2] to choose "" if R3 = "" else REGVALS[2]. 
+
     print REGVALS[0]:padleft(7) at (31,11).
     print REGVALS[1]:padleft(7) at (31,13).
     print REGVALS[2]:padleft(7) at (31,15).
@@ -120,7 +124,7 @@ declare local function UPLK_ACTY {
 
 declare function COMP_ACTY {
     if CMPACTY {
-        if kuniverse:realtime - lastCompActyTime >= 0.1 {
+        if time:seconds - lastCompActyTime >= 1 {
             toggle CMPACTY.
         }
         print "COMP" at (22,5).
@@ -129,29 +133,29 @@ declare function COMP_ACTY {
     else {
         print "    " at (22,5).
         print "    " at (22,6).    
-        set lastCompActyTime to kuniverse:realtime.   
+        set lastCompActyTime to time:seconds.   
     }
 }
 
 declare local function OPR_ERR {
     if OEBIT {
         print "OPR ERR" at (2,15).
-        set OEBIT to abs(kuniverse:realtime - lastErrorTime) <= 1.5.
+        set OEBIT to abs(time:seconds - lastErrorTime) <= 1.5.
         // this should ensure OP_ERR light does not stay on
     }
     else {
         print "       " at (2,15).
-        set lastErrorTime to kuniverse:realtime.
+        set lastErrorTime to time:seconds.
     }
 }
 
 declare local function PROG {
     if PROGBIT {
         print "PROG" at (10,11).
-        set PROGBIT to abs(kuniverse:realtime - lastProgErrorTime) <= 1.5. 
+        set PROGBIT to abs(time:seconds - lastProgErrorTime) <= 1.5. 
     } else {
         print "    " at (10,11).
-        set lastProgErrorTime to kuniverse:realtime.
+        set lastProgErrorTime to time:seconds.
     }
 }
 
