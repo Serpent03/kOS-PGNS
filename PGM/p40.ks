@@ -1,3 +1,6 @@
-// engine burn thingy mcjingy
-// deltav and when and how long to burn for
-// times in GET or perhaps ±EVENT
+// SPS/DPS thrusting
+
+declare global function P40 {
+  NEW_ROUTINE("30").
+  NEW_ROUTINE("41"). // "average G". calculate our new orbital elements
+}
